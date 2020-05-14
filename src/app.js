@@ -4,7 +4,7 @@
  * @Author: lxw
  * @Date: 2020-05-12 11:20:47
  * @LastEditors: lxw
- * @LastEditTime: 2020-05-14 11:32:51
+ * @LastEditTime: 2020-05-14 12:47:42
  */
 // express app 入口文件同app.js
 
@@ -26,8 +26,8 @@ import express from 'express'; // call express
 // 导入封装项目业务路由的路由管理器——对应java的控制器层
 import businessRoutes from './routes/';
 
-// 接入自动S生成在线接口文档的swggerui插件配置文件——封装的配置文件
-import setSwagger from "./config/swagger";
+// 接入自动S生成在线接口文档的swggerui插件配置文件——封装的配置文件——不需要了
+// import setSwagger from "./config/swagger";
 
 import path from 'path'
 
@@ -56,7 +56,10 @@ const app = express()
 db.then(() => {
 
     consoleLog('连接数据库成功', 'white')
-    setSwagger(app)
+
+    // 使用swagger ui,这里是将ui页面的静态资源从本地导入，使用express.statci解析静态资源
+    // 根据在线编辑swagger，编辑自己需要的接口，导入json文件，修改本地的swagger ui
+    app.use('/swagger-ui',express.static(path.join(__dirname,'./public/swagger-ui')))
 
     // 现在express模块内置了 解析post请求体参数格式的的中间件了
     app.use(express.urlencoded({ extended: true }))

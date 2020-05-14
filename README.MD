@@ -4,7 +4,7 @@
  * @Author: lxw
  * @Date: 2020-05-12 11:06:40
  * @LastEditors: lxw
- * @LastEditTime: 2020-05-14 12:14:21
+ * @LastEditTime: 2020-05-14 14:41:41
  -->
 ##### 使用express框架搭建的纯web api接口，接口风格是resful api风格
 ##### 特点
@@ -76,6 +76,7 @@ model层
 [swagger注释编辑器](http://editor.swagger.io/#)
 [nodejs 使用swagger ui的正确方式](https://www.jianshu.com/p/2b1db8bff5a1)
 [respon返回数据格式和返回方式](https://blog.csdn.net/qq_41761591/article/details/86467827?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase)
+【babel](https://blog.csdn.net/houdabiao/article/details/78620202)
 [使用中间件和获取请求的host实现防盗连接]()
 
 ##### 一些收获
@@ -97,3 +98,19 @@ model层
   - 网球请求，路由拦截，对应路由回调函数
 > 异步实现，事件，回调
 > 错误处理的话，进行捕获，暴露错误
+> 项目中的错误处理逻辑，以路由进来，调用service层，再调用Dao层操作数据库为例
+```
+1. 在Dao层，是实际操作数据库代码，属于io操作，使用async实现异步io
+2. Dao层处理不进行错误捕获
+3. 在serve调用Dao层方法，使用Promise实现异步，以及捕获Dao层可能出现的错误，捕获之后暴露给路由层也就是controler层
+4. controle层接受到错误，使用res将封装的错误信息发送给前端，以及使用封装的console打印到控制台。
+```
+![err](./error1.png)
+
+3. 静态资源打包的额外考虑，比如我项目src通过bable解析后存放在dist目录的，它是解析js文件的，但是如果存在其他的文件比如静态文件，这里我发现静态文件如果不喷子和
+忽略的话，它会解析，但是只解析里面的js文件，其他的地方都没有了，所以才说需要webpack这样的全功能的构建工具
+4. express static解析静态资源路径问题
+```js
+    app.use('/swagger-ui',express.static(path.join(__dirname,'./public/swagger-ui')))
+
+```

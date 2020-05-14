@@ -4,7 +4,7 @@
  * @Author: lxw
  * @Date: 2020-05-13 23:41:01
  * @LastEditors: lxw
- * @LastEditTime: 2020-05-13 23:56:24
+ * @LastEditTime: 2020-05-14 14:20:25
  */
 /**
  * @name: 
@@ -34,11 +34,13 @@ const result = {
     },
     // 请求失败，状态码500，后台出错——数据库操作失败或者是其他地方代码出错
     'ERROR-500':{
-        message:'error-服务器内部错误'
+        message:'error-服务器内部错误',
+        err:null
     },
     // 接口参数错误
     'ERROR-400':{
-       message:'error-请求参数有误'
+       message:'error-请求参数有误',
+       err:null
     }
 }
 
