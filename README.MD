@@ -4,13 +4,14 @@
  * @Author: lxw
  * @Date: 2020-05-12 11:06:40
  * @LastEditors: lxw
- * @LastEditTime: 2020-05-14 12:03:53
+ * @LastEditTime: 2020-05-14 12:14:21
  -->
 ##### 使用express框架搭建的纯web api接口，接口风格是resful api风格
 ##### 特点
 1. 架构设计，实现resfule api接口设计、项目分层结构设计，解耦业务逻辑代码，提高代码的可维护性
 2. 一套接口可用于多端客户端，pc端管理系统、移动端app，安卓、ios
 3. 基于nodejs的npm插件系统配置一套脚手架基础设施，实现自动化工程开发，包括
+4. 从0搭建mvc框架模式，从数据库配置、路由配置、业务逻辑流程组织
 ```
 1. node开发过程中自动重启服务器，无需每次都要运行node index.js启动服务器（nodemon)
 2. 使用ES6，ES7 编写代码，自动编译 使用import，export新特性。(babel)
