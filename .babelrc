@@ -1,0 +1,14 @@
+{
+    "presets": [
+
+         // 按需要引入扩展模块
+         [
+             "env",
+             {
+                "useBuiltIns":"usage",
+                "debug":true
+             }
+         ],
+        "stage-0"
+    ]
+}

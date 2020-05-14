@@ -1,0 +1,37 @@
+{
+  "name": "freetravel",
+  "version": "1.0.0",
+  "description": "随心游（一款社交旅游平台）web api项目，api风格resful api",
+  "main": "dist/app.js",
+  "scripts": {
+    "watch": "babel -w src/ -d dist/",
+    "build": "babel src/ -d dist/",
+    "serve": "babel -w src/ -d dist/ | nodemon --watch dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "resful",
+    "api",
+    "旅游社交平台接口"
+  ],
+  "author": "刘晓伟",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.8.7",
+    "body-parser": "latest",
+    "express": "latest",
+    "lodash": "latest",
+    "mongoose": "latest",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "latest",
+    "nodemon": "^1.17.5"
+  }
+}
