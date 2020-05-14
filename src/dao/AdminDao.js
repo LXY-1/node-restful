@@ -4,7 +4,7 @@
  * @Author: lxw
  * @Date: 2020-05-13 16:04:41
  * @LastEditors: lxw
- * @LastEditTime: 2020-05-13 19:27:29
+ * @LastEditTime: 2020-05-14 14:22:48
  */
 
 import Adminer from '../models/admin.js';
@@ -22,13 +22,8 @@ class AdminDao {
    */
   async save(obj) {
     let entity = new Adminer(obj)
-    try {
-      let result = await entity.save();
-      return result;
-    } catch (error) {
-      console.log('save error--> ', error);
-      return error;
-    }
+    let result = await entity.save();
+    return result;
   }
 
 }
