@@ -4,7 +4,7 @@
  * @Author: lxw
  * @Date: 2020-05-13 23:41:01
  * @LastEditors: lxw
- * @LastEditTime: 2020-05-14 14:20:25
+ * @LastEditTime: 2020-05-19 14:51:28
  */
 /**
  * @name: 
@@ -31,6 +31,16 @@ const result = {
         code: 2,
         data: null,
         message: '没有此接口操作权限'
+    },
+    'NOUSER': {
+        code: 3,
+        data: null,
+        message: '用户不存在'
+    },
+    'FROZEN': {
+        code: 4,
+        data: null,
+        message: '用户被冻结了'
     },
     // 请求失败，状态码500，后台出错——数据库操作失败或者是其他地方代码出错
     'ERROR-500':{

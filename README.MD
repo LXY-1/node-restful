@@ -4,8 +4,12 @@
  * @Author: lxw
  * @Date: 2020-05-12 11:06:40
  * @LastEditors: lxw
- * @LastEditTime: 2020-05-14 14:41:41
+ * @LastEditTime: 2020-06-05 12:04:50
  -->
+
+##### 局域网接口baseurl
+http://192.168.31.8
+
 ##### 使用express框架搭建的纯web api接口，接口风格是resful api风格
 ##### 特点
 1. 架构设计，实现resfule api接口设计、项目分层结构设计，解耦业务逻辑代码，提高代码的可维护性
@@ -48,12 +52,18 @@
     ]
 }
 ```
+4. swagger-ui配置接口文档
+![swagger](./请求成功swaggerui查看.png')
 - 控制条调试问题
 1. 打印问题
 > 封装一个全局的consoleLog，打印彩色字体。
    - 方案一、自己封装，这里是我自己封装了一个[link](https://blog.csdn.net/autumn84/article/details/44816947?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.nonecase)
    - 方案二、使用第三方插件 [link](https://blog.csdn.net/hhs57/article/details/80077568?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.nonecase)
 
+
+##### 安全性问题
+1. 采用md5加密密码后存储到数据库
+2. 采用session操作cookie
 
 ##### 项目运行分析
 ###### 入口文件
@@ -78,6 +88,13 @@ model层
 [respon返回数据格式和返回方式](https://blog.csdn.net/qq_41761591/article/details/86467827?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase)
 【babel](https://blog.csdn.net/houdabiao/article/details/78620202)
 [使用中间件和获取请求的host实现防盗连接]()
+[mongoose常用操作文档](https://segmentfault.com/a/1190000012095054)
+[mongoose查询相关案例](https://www.cnblogs.com/coolslider/p/7832083.html)
+[RESFUL架构](https://www.cnblogs.com/thinkam/p/8299452.html)
+
+
+##### 业务需求相关
+1. 多条件模糊查询 or函数 、and等函数
 
 ##### 一些收获
 1. 模块化方法注释功能
@@ -114,3 +131,172 @@ model层
     app.use('/swagger-ui',express.static(path.join(__dirname,'./public/swagger-ui')))
 
 ```
+
+5. 与数据库交互的方式
+> 1. 使用数据库的自带的查询语言（比如sql）
+> 2. 使用对象模型('ODM')或对象关系模型("ORM")，一个ODM或ORM对象代表的就是一个映射到底层数据库的数据对象比如json对象。一些ORM对象是指定数据库的，一些则不然。
+> 使用ODM的优势在于程序员可以一直关注与JavaScript 对象而不是数据库语义，尤其> 是在你需要和不同的数据库交互（可能是同一应用，或不同应用）。ODM也提供了清晰> 方式去校验检查数据。
+> 使用ODM或ORM可以降低开发和维护成本，除非你非常擅长原生查询语言，或对性能要求很高，否则你都应该优先考虑使用ODM或ORM。
+
+> 在选择解决方案时一般应该考虑他们都提供哪些功能，以及他们社区的活跃度（下载，捐款，Bug报告，文档质量）。在此文写作时Mongoose当前最受欢迎的ORM，如果你在你的应用中使用MongoDB作为你的数据库，那么他是一个合理的选择。
+
+6. mongosse基础到高级使用增删改查
+> mongosse是一个用于异步环境的MongoDB的对象模型
+
+6. 使用express搭建restful风格api的可能性：路由支持动态路径，也就是动态路由，基于动态路由设计restful风格的接口[link](https://www.cnblogs.com/thinkam/p/8299452.html)
+```js
+/* patch users */
+router.patch('/:id', function (req, res) {
+    console.log('patch users called');
+    userDAO.getById(req.params.id, function (user) {
+        var username = req.body.username;
+        if(username) {
+            user.username = username;
+        }
+        var password = req.body.password;
+        if(password) {
+            user.password = password;
+        }
+        console.log(user);
+        userDAO.update(user, function (success) {
+            var r =  result.createResult(success, null);
+            res.json(r);
+        });
+    });
+});
+````
+7. mongosse多id查询[link](https://blog.csdn.net/weixin_33810006/article/details/86260682)
+```js
+传入多个id，查询多条数据，传入id数组，使用$in方法
+
+Model.find({ _id: { $in: ['aID', 'bID'] } });
+```
+比如是一个角色里面有一个数组保存了多个权限id，我想要一次性根据这些id查询所有权限
+
+8. 非关系性数据库的另一个好处，对比mysql，mysql表设计好了，每个记录的结构都是固定好的，如果后期有表的记录需要添加一个新的字段，你必须修改表的结构，但是
+对于mongodb的话，表字段是文档是类似json对象文档，这使得每个集合的结构不用严格对应，比如一个集合多一个字段，另一个集合少一个字段，比如一个表结构里面有a、b、c三个字段如果是这个表维护不同的用户，一开始它们拥有的字段都是三个是一致的，但是如果后期需求变更了，它们是有很大相似性的，角色a用户需要字段abcd，角色a只需要ab，角色d需要a字段，次数你的表就必须要设置全部字段，否在添加多字段的用户就会报错，
+
+8.session操作步骤，记住session依附于requset，记住这一点就可以使用request.session是一个存储值的对象，可以通过类似本地缓存的操作思想
+app.js
+```js
+//引入express-session用于在express中操作session
+let session = require('express-session');
+//引入connect-mongo用于session持久化
+const MongoStore = require('connect-mongo')(session);
+
+//定义一个cookie和session组合使用的配置对象
+app.use(session({
+    name: 'mycname',   //设置cookie的name，默认值是：connect.sid
+    secret: 'atguigu', //参与加密的字符串（又称签名）
+    saveUninitialized: false, //是否在存储内容之前创建会话
+    resave: true,//是否在每次请求时，强制重新保存session，即使他们没有变化
+    store: new MongoStore({
+        url: 'mongodb://localhost:27017/cookies_container',
+        touchAfter: 1800//修改频率（例：//在24小时之内只更新一次）
+    }),
+    cookie: {
+        httpOnly: true, // 开启后前端无法通过 JS 操作cookie
+        maxAge: 100 * 30 // 设置cookie的过期时间
+    },
+}));
+```
+登录成功之后
+```js
+  if (result) {
+                    console.log(result)
+                    // session操作
+                    //1.在服务器中开辟一块内存，用于存储session
+                    //2.将用户的id存入上一步产生的session中
+                    //3.获取session的编号，放入一个cookie中
+                    //4.将上一步的cookie返回给客户端
+                    //以上四步可以通过一行代码搞定
+                    request.session._id = result._id
+                    console.log(`请求成功${result}`)
+                    // 请求成功返回成功的json 状态码200
+                    responResult['SUCCESS'].data = result
+                    responResult['SUCCESS'].message = '登录成功'
+                    resolve(responResult['SUCCESS'])
+                } else {
+                    responResult['NOUSER'].data = result
+                    resolve(responResult['NOUSER'])
+                }
+```
+
+判断是否登录
+```js
+ const {_id} = request.session
+  if(_id){
+    let result = await userModel.findOne({_id})
+    if(result){
+      response.render('usercenter',{nickName:result.nick_name})
+    }else{
+      console.log('用户非法修改了cookie')
+      response.redirect('/login')
+    }
+  }else{
+    response.redirect('/login')
+  }
+```
+使用session的好处是更安全，更方便混淆cookie字段的key名称，这样可以阻止别人在浏览器端破解你的cooki里面的信息。客户端通过控制台来查看cookie字段，如果明文存储的话。
+
+
+9. mvc模式的好处
+从业务逻辑看是易于维护和扩展尤其是修改某个接口功能
+1. 底层dao操作数据库是封装最基础的操作，比如一个多条件分页查询。但是不同的实体业务不同要求查询的字段和条件不同，可以在对应的service层进行具体的条件封装，dao层只提供最基础的，但是支持传参修改条件，这样方便修改和扩展新的功能，比如我这里的查询功能就是这样设计的。也就是数据库的操作与具体的业务逻辑进行分层的好处就是方便修改和扩展
+```js
+    /**
+    * @name: 
+    * @description: 分页 + 多添加模糊查询 TODO:以后这里要扩展一个字段：时间范围查询
+    * @msg: 
+    * @param {type} | 权限字段 |title parenttitle
+    * @param {type} | 分页字段 | pageNum  pagesiez 
+    * @return: 
+    */
+   fiindValug(title, parenttitle, pageNum, pageSize) {
+
+    // 具体的添加规则，在这里封装比如根据title、parenttitle模糊查询，满足其中一个就可以了，注意mongoose模糊查询是利用传入正则表达式实现的
+    let titleReg = new RegExp(title, 'i')
+    let parenttitleReg = new RegExp(parenttitle, 'i')
+    let condition = {
+        $or: [
+            { title: titleReg },
+            { parenttitle: parenttitleReg }
+        ]
+    }
+
+    let pageObj = {
+        pageNum: pageNum,
+        pageSize: pageSize
+    }
+    return new Promise((resolve, reject) => {
+        pDao.findByVgue(condition, pageObj).then((result) => {
+            console.log(`请求成功${result}`)
+            // 请求成功返回成功的json 状态码200
+            responResult['SUCCESS'].data = result
+            resolve(responResult['SUCCESS'])
+        }).catch((err) => {
+            // 返回失败的json，状态码500
+            responResult['ERROR-500'].message = '数据库操作失败'
+            responResult['ERROR-500'].err = err
+            reject(responResult['ERROR-500'])
+        });
+    });
+}
+````
+
+10 多条件查询是 and or等的合并，注意哪些字段是and哪些字段是可以or的
+> 一般而言状态 + 模糊字段查询的，状态和模糊字段条件是要共同成立的，也就是 状态 and 模糊字段条件
+
+11. 文件上传相关案例
+1 [link](https://zhuanlan.zhihu.com/p/92623385)：
+2 [link](https://www.cnblogs.com/natsu12/p/5179991.html) :
+
+##### 补充
+1. 数据库的连接池，重复使用数据库连接
+2. 登录状态判断session使用
+3. 密码安全性，后台使用md5加密
+
+TODO:有个坑，真的的记一下，dist目录才是服务器真正允许的目录。
+
+### 简单的socke通信：nodejs socket.io使用 配合pc客户端 socket 以及flutter端websocket
+目前实现可以给指定的在线用户推送消息，没有界面，没有聊天。

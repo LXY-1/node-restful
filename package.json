@@ -20,9 +20,14 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "body-parser": "latest",
+    "connect-mongo": "^3.2.0",
     "express": "latest",
+    "express-session": "^1.17.1",
     "lodash": "latest",
+    "md5": "^2.2.1",
     "mongoose": "latest",
+    "multiparty": "^4.2.1",
+    "socket.io": "^2.3.0",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4"
   },
